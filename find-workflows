@@ -1,0 +1,11 @@
+#!/bin/bash
+
+target_dir=${1}
+if [[ -z "${target_dir}" ]]; then
+    echo "Please provide a target directory hierarchy to search for .github/workflows directories"
+    exit 2
+fi
+
+# Human method of finding git repositories while skipping unnecessary
+# directories.
+find ${target_dir} -type d -exec test -d '{}/.git' \; -exec test -d '{}/.github/workflows' \; -print -prune | while read d; do ls -ld ${d}/.github/workflows; done
