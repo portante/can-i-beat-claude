@@ -1,0 +1,27 @@
+#!/bin/bash
+
+target_dir=${1}
+if [[ -z "${target_dir}" ]]; then
+    echo "Please provide a target directory hierarchy to search for .github/workflows directories"
+    exit 2
+fi
+
+# Claude's method of finding git repositories while skipping unnecessary
+# directories.
+find ${target_dir} \
+    -type d \( \
+        -name "node_modules" -o \
+        -name ".git" -o \
+        -name "venv" -o \
+        -name "__pycache__" -o \
+        -name "build" -o \
+        -name "dist" \
+    \) -prune \
+    -o -type d -name ".github" -print \
+    | while read githubdir; do
+        if [ -d "${githubdir}/workflows" ]; then
+            # Get the repository directory (parent of .github)
+            repo_dir="$(dirname "$githubdir")"
+            ls -ld ${repo_dir}/.github/workflows
+        fi
+    done
