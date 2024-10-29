@@ -16,4 +16,4 @@ find ${target_dir} \
         -name "build" -o \
         -name "dist" \
     \) -prune \
-    -o -type d -exec test -d '{}/.git' \; -exec test -d '{}/.github/workflows' \; -print -prune | while read d; do ls -ld ${d}/.github/workflows; done
+    -o -type d -exec test -d '{}/.git' -a -d '{}/.github/workflows' \; -print -prune | while read d; do ls -ld ${d}/.github/workflows; done
