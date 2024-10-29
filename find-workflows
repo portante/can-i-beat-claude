@@ -8,4 +8,12 @@ fi
 
 # Human method of finding git repositories while skipping unnecessary
 # directories.
-find ${target_dir} -type d -exec test -d '{}/.git' \; -exec test -d '{}/.github/workflows' \; -print -prune | while read d; do ls -ld ${d}/.github/workflows; done
+find ${target_dir} \
+    -type d \( \
+        -name "node_modules" -o \
+        -name "venv" -o \
+        -name "__pycache__" -o \
+        -name "build" -o \
+        -name "dist" \
+    \) -prune \
+    -o -type d -exec test -d '{}/.git' \; -exec test -d '{}/.github/workflows' \; -print -prune | while read d; do ls -ld ${d}/.github/workflows; done
